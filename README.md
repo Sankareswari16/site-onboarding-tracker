@@ -1,15 +1,4 @@
 # Investigator Site Onboarding Tracker — rebuild
-
-A working replacement for the Form → Power Automate → shared Excel → reply-all
-approvals → monthly-report prototype that failed at ~150 sites. It is a small,
-runnable service (FastAPI + SQLite) with a real approval state machine,
-database-enforced audit trail, role-based access control, SLA escalation,
-live reporting, and a safe migration path off the legacy workbook.
-
-This is an assessment deliverable, not a production system. The
-[scope section](#what-is-real-and-what-is-simplified) is explicit about what is
-implemented versus what is a documented swap-in.
-
 ## The six failures, and what fixes each
 
 | Failure at ~150 sites | Root cause | What fixes it here | Proved by |
@@ -122,7 +111,6 @@ infrastructure that a reviewer would have to stand up before seeing anything wor
 ## Known limitations (honest list)
 
 - **Duplicate detection is normalization-based, not fuzzy.** "Dr. J. Smith" vs "Dr John Smith" are different keys. A same-site-name/different-investigator submission returns a warning rather than a block. Fuzzy matching with a coordinator review step is the next improvement.
-- **No UI.** The API is complete; a front end is out of scope.
 - **Escalation needs a scheduler.** `run_escalations` is idempotent and safe to call from cron/a timer; nothing calls it automatically here.
 - **Notifications use a logging transport.** Delivery, retry bookkeeping and failure handling are real; the SMTP/Slack adapter is not.
 - **Not a validated GxP system.** The audit trail, access control and append-only controls are the *foundations* regulated environments need, but this does not claim 21 CFR Part 11 compliance. That would additionally need e-signature binding, validation documentation, and controlled operational procedures.
